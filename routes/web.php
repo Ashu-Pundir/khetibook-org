@@ -61,5 +61,8 @@ Route::get('/admin/user-crop-summary', [AdminController::class, 'userSummary'])-
 
 Route::get('/admin/allUserSummaryPdf', [PDFController::class, 'userCropSummaryPdf'])->name('admin.allUserSummaryPdf');
 
+Route::post('/admin/crops/createcrop', [AdminController::class, 'createCrop'])->name('admin.crop.store');
+
+
 
 

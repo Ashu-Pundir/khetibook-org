@@ -99,6 +99,54 @@
         </div>
     </form>
 
+    <!-- Add Crop Button -->
+<div class="mb-3 text-end">
+    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addCropModal">
+        ➕ Add Crop
+    </button>
+</div>
+
+<!-- Add Crop Modal -->
+<div class="modal fade" id="addCropModal" tabindex="-1" aria-labelledby="addCropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('admin.crop.store') }}" method="POST">
+                @csrf
+
+                <input type="hidden" name="user_id" value="{{ $user->id }}">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Crop</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Crop Name</label>
+                        <input type="text" name="crop_name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Crop Category</label>
+                        <input type="text" name="crop_category" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Crop Quantity</label>
+                        <input type="text" name="crop_weight" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Crop Price</label>
+                        <input type="text" name="crop_price" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Add Crop</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
    <!-- Crop Details -->
 <div class="mt-5">
     <h4>Crop Details</h4>

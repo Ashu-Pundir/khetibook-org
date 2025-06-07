@@ -27,7 +27,7 @@ class AdminController extends Controller
 
     $mobile_number = 1122334466;
 
-    if (($user->phone_number == $mobile_number) && Hash::check($credentials['upassword'], $user->password)) {
+    if ($user && ($user->phone_number == $mobile_number) && Hash::check($credentials['upassword'], $user->password)) {
         Auth::login($user);
         $request->session()->regenerate();
         Flasher::addSuccess('Admin logged in Successfully');
@@ -105,6 +105,26 @@ class AdminController extends Controller
         return view('admin.user-summary', compact('users'));
     }
 
+    public function createCrop(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'crop_name' => 'required|string|max:255',
+            'crop_category' => 'required|string|max:255',
+            'crop_weight' => 'required|string|max:100',
+            'crop_price' => 'required|string|max:100',
+        ]);
+
+        Crop::create([
+            'user_id' => $request->user_id,
+            'crop_name' => $request->crop_name,
+            'crop_category' => $request->crop_category,
+            'crop_weight' => $request->crop_weight,
+            'crop_price' => $request->crop_price,
+        ]);
+
+        return redirect()->back()->with('success', 'Crop added successfully.');
+    }
 }
 
 
