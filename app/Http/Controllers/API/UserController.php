@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Crop;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -91,5 +93,50 @@ class UserController extends Controller
             'token' => $token,
             'user' => $user
         ], 200);
+    }
+
+    public function getCrops(Request $request){
+        $user = $request->user();
+        $crops = $user->crops;
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'user Crops fetch Successfully',
+            'data' => $crops
+        ]);
+    }
+
+    public function addCrops(Request $request){
+        
+        $validator = Validator::make($request->all(),[
+            'crop_name' => 'required|string|max:255',
+            'crop_category' => 'required|string|max:255',
+            'crop_weight' => 'required|numeric|min:1',
+            'crop_price' => 'required|numeric|min:0',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation Failed',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $user = Auth::user();
+
+        $crop = new Crop();
+        $crop->user_id = $user->id;
+        $crop->crop_name = $request->crop_name;
+        $crop->crop_category = $request->crop_category;
+        $crop->crop_weight = $request->crop_weight;
+        $crop->crop_price = $request->crop_price;
+        $crop->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Crop added successfully',
+            'crop' => $crop
+        ], 201);
     }
 }
