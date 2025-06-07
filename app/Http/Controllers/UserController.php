@@ -10,6 +10,7 @@ use Illuminate\Contracts\Support\ValidatedData;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 use function Laravel\Prompts\password;
 
@@ -23,30 +24,35 @@ class UserController extends Controller
 
     public function create(Request $request)
     {
-
-        
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'uname' => 'required|string|max:255',
             'uphone' => 'required|digits:10',
             'uemail' => 'nullable|email|unique:users,email',
             'upassword' => 'required|min:6|max:12',
             'ucpassword' => 'required|same:upassword',
             'city' => 'required|string|max:80',
-            'district' => 'required|string|',
-            'state' => 'required|string|',
+            'district' => 'required|string',
+            'state' => 'required|string',
             'pincode' => 'required|digits_between:4,10',
-            'country' => 'required|string|',
+            'country' => 'required|string',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
-        ],[
+        ], [
             'uphone.required' => 'Phone Number field is required',
-            'uphone.digits' => 'Phone Number field must be exactly 10 digits',
-            'upassword.required' => 'Password field is required',
+            'uphone.digits' => 'Phone Number must be exactly 10 digits',
+            'upassword.required' => 'Password is required',
             'upassword.min' => 'Password must be at least 6 characters',
-            'ucpassword.same' => 'Confirm Password must be same as password.',
+            'ucpassword.same' => 'Confirm Password must be the same as Password.',
         ]);
-        // Log::info('Registration data:', $request->all());
-        
+
+        if ($validator->fails()) {
+            foreach ($validator->errors()->all() as $error) {
+                Flasher::addError($error);
+            }
+            return back()->withInput();
+        }
+
+        // Create user if validation passed
         $user = new User();
         $user->name = $request->uname;
         $user->phone_number = $request->uphone;
@@ -61,33 +67,42 @@ class UserController extends Controller
         $user->longitude = $request->longitude;
 
         $user->save();
-        Flasher::addSuccess('Registration Successfull');
-        return redirect()->route('login');  
+
+        Flasher::addSuccess('Registration successful');
+        return redirect()->route('login');
     }
 
 
     public function login(Request $request)
     {
-    // Log::info($request);
+        // Manually validate inputs
+        $validator = Validator::make($request->all(), [
+            'uphone' => 'required|digits:10',
+            'upassword' => 'required',
+        ]);
 
-    $credentials = $request->validate([
-        'uphone' => 'required|digits:10',
-        'upassword' => 'required',
-    ]);
+        // Show validation errors using Flasher
+        if ($validator->fails()) {
+            foreach ($validator->errors()->all() as $error) {
+                Flasher::addError($error);
+            }
+            return back()->withInput();
+        }
 
-    // Find user by phone number
-    $user = User::where('phone_number', $credentials['uphone'])->first();
+        // Attempt to authenticate user
+        $user = User::where('phone_number', $request->uphone)->first();
 
-    if ($user && Hash::check($credentials['upassword'], $user->password)) {
-        Auth::login($user   );
-        $request->session()->regenerate();
-        Flasher::addSuccess('User logged in Successfully');
-        return redirect()->route('crop.dashboard');
+        if ($user && Hash::check($request->upassword, $user->password)) {
+            Auth::login($user);
+            $request->session()->regenerate();
+            Flasher::addSuccess('User logged in successfully');
+            return redirect()->route('crop.dashboard');
+        }
+
+        Flasher::addError('Invalid phone number or password');
+        return redirect()->route('login');
     }
 
-    Flasher::addError('Invalid phone number or password');
-    return redirect()->route('login');
-    }
     
     public function logout(Request $request)
     {

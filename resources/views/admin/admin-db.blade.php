@@ -153,8 +153,14 @@
         </div>
 
         <!-- Sidebar links -->
-        <a href="{{ route('admin.dashboard') }}"><i class="fa-solid fa-users"></i><span> All Users</span></a>
-        <a href="{{ route('admin.userCropSummary') }}" class="active"><i class="fa-solid fa-wheat-awn"></i><span> Crop Summary</span></a>
+        <a href="{{ route('admin.dashboard') }}" class="{{ Route::is('admin.dashboard') ? 'active' : '' }}">
+          <i class="fa-solid fa-users"></i><span> All Users</span>
+        </a>
+
+        <a href="{{ route('admin.userCropSummary') }}" class="{{ Route::is('admin.userCropSummary') ? 'active' : '' }}">
+          <i class="fa-solid fa-wheat-awn"></i><span> Crop Summary</span>
+        </a>
+
         <a href="#" class="disabled-link"><i class="fa-solid fa-gear"></i><span> Settings</span></a>
         </div>
 <!-- Main Content -->

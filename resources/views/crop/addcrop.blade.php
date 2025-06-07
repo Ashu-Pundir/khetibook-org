@@ -31,6 +31,7 @@
       background-color: #9cc98d;
       height: 92vh;
       border-right: 1px solid #dee2e6;
+      transition: all 0.25s ease-out;
     }
 
     .sidebar a {
@@ -94,6 +95,7 @@
       height: 92vh;
       padding-top: 2rem;
       width: 10vh;
+      transition: all 0.25s ease-out;
     }
 
     .sidebar.hide a span{
@@ -158,11 +160,14 @@
   <div class="container-fluid">
     <div class="row">
       <!-- Sidebar -->
-      <div class="col-md-3 sidebar pt-4">
-        <div class="icon">
-          <i class="fa-solid fa-bars " id="icon"></i>
+      <div class="col-md-2 sidebar pt-4">
+      <div class="d-flex justify-content-between align-items-center px-3 mb-4">
+        <h5 class="text-success mb-3 mx-auto">Menu</h5>
+        <div class="icon ms-auto" style="cursor: pointer;">
+          <i class="fa-solid fa-bars text-dark" id="icon"></i>
         </div>
-        <h5 class="text-center mb-4 text-success">Menu</h5>
+      </div>
+
         <a href="{{ route('crop.dashboard') }}" class="{{ request()->routeIs('crop.dashboard') ? 'active' : '' }}"><i class="fa-brands fa-dashcube"></i>  <span>Dashboard</span></a>
         <a href="{{ route('crop.addcrop') }}" class="{{ request()->routeIs('crop.addcrop') ? 'active' : '' }}"><i class="fa-solid fa-plus"></i>  <span>Add New Crop </span></a>
         {{-- <a href="{{ url('/my-crops') }}" class="{{ request()->is('my-crops') ? 'active' : '' }}" class="disabled-link" >My Crops</a>
@@ -172,7 +177,7 @@
       </div>
 
       <!-- Content -->
-      <div class="col-md-9 d-flex align-items-center justify-content-center py-5 form-fix" id="form-sec">
+      <div class="col-md-10 d-flex align-items-center justify-content-center py-5 form-fix" id="form-sec">
         <div class="form-section w-75">
 
           <div class="d-flex justify-content-between align-items-center mb-4">
