@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CropController;
 use App\Http\Controllers\PDFController;
+use App\Http\Controllers\PriceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
@@ -37,8 +38,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/generate-pdf', [PDFController::class, 'createPDF'])->name('crops.pdf');
     Route::get('/admin/dashboard', [AdminController::class, 'show'])->name('admin.dashboard');
+    
 
-
+    Route::get('/admin/check-price', [PriceController::class, 'adminIndex'])->name('admincheck.price'); 
+    Route::post('/admin/get-price', [PriceController::class, 'checkPriceForm'])->name('submit.admincheckprice');
 });
 
 // Admin Routes
@@ -64,5 +67,11 @@ Route::get('/admin/allUserSummaryPdf', [PDFController::class, 'userCropSummaryPd
 Route::post('/admin/crops/createcrop', [AdminController::class, 'createCrop'])->name('admin.crop.store');
 
 
+Route::get('/check-price', [PriceController::class, 'index'])->name('check.price'); 
+Route::post('/get-price', [PriceController::class, 'checkPriceForm'])->name('submit.checkprice');
 
+Route::get('/user/update', [UserController::class, 'UpdateUser'])->name('user.update');
+
+
+Route::get('/admin/check-price', [PriceController::class, 'index'])->name('admincheck.price'); // For the dropdown 
 

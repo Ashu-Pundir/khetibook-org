@@ -103,6 +103,51 @@ class UserController extends Controller
         return redirect()->route('login');
     }
 
+    public function update(Request $request){
+         $user = Auth::user();
+
+        // Validate user input
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'district' => 'nullable|string|max:255',
+            'state' => 'nullable|string|max:255',
+            'pincode' => 'nullable|string|max:20',
+            'country' => 'nullable|string|max:100',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
+            'email' => 'nullable|email',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // Update user data (excluding email, password, phone)
+        $user = User::update($request->only([
+            'name',
+            'city',
+            'district',
+            'state',
+            'pincode',
+            'country',
+            'latitude',
+            'longitude',
+            'email',
+        ]));
+
+        // Show flash success message using Flasher
+        Flasher::addSuccess('Profile updated successfully!');
+
+        return redirect()->back();
+    }
+
+
+    public function updateUser(){
+        return view('crop.usersetting');
+    }
     
     public function logout(Request $request)
     {

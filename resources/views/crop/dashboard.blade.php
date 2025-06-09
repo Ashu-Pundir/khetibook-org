@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
 
-  <style>
+    <style>
     :root {
       --bg-main: #f0f0e5;
       --table-header: #e6ebe9;
@@ -190,10 +190,9 @@
       </div>
         <a href="{{ route('crop.dashboard') }}" class="{{ request()->routeIs('crop.dashboard') ? 'active' : '' }}"><i class="fa-brands fa-dashcube"></i>  <span>Dashboard</span></a>
         <a href="{{ route('crop.addcrop') }}" class="{{ request()->routeIs('crop.addcrop') ? 'active' : '' }}"><i class="fa-solid fa-plus"></i>  <span>Add New Crop </span></a>
-        {{-- <a href="{{ url('/my-crops') }}" class="{{ request()->is('my-crops') ? 'active' : '' }}" class="disabled-link" >My Crops</a>
-        <a href="{{ url('/settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}" class="disabled-link" >Settings</a> --}}
-        <a href="#" class="disabled-link"><i class="fa-solid fa-wheat-awn"></i>  <span>My Crops</span></a>
-        <a href="#" class="disabled-link"><i class="fa-solid fa-gear"></i>  <span>Settings</span></a>
+        <a href="{{ route('check.price') }}" class="{{ request()->is('my-crops') ? 'active' : '' }}" ><i class="fas fa-search-dollar"></i> Market Price</a>
+        <a href="{{ route('user.update') }}" class="{{ request()->is('user.update') ? 'active' : '' }}" ><i class="fa-solid fa-gear"></i>  <span>Settings</span></a>
+      
       </div>  
 
       <!-- Main Content -->

@@ -130,6 +130,12 @@
         margin-bottom: 20px
     }
 
+    @media(max-width:768px){
+      .sidebar{
+        height: 15%; 
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -159,6 +165,9 @@
 
         <a href="{{ route('admin.userCropSummary') }}" class="{{ Route::is('admin.userCropSummary') ? 'active' : '' }}">
           <i class="fa-solid fa-wheat-awn"></i><span> Crop Summary</span>
+        </a>
+
+        <a href="{{ route('admincheck.price') }}" class="{{ request()->is('my-crops') ? 'active' : '' }}" ><i class="fas fa-search-dollar"></i> <span>Market Price</span>
         </a>
 
         <a href="#" class="disabled-link"><i class="fa-solid fa-gear"></i><span> Settings</span></a>

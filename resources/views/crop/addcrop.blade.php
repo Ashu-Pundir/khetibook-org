@@ -30,6 +30,7 @@
     .sidebar {
       background-color: #9cc98d;
       height: 92vh;
+      padding-top: 2rem;
       border-right: 1px solid #dee2e6;
       transition: all 0.25s ease-out;
     }
@@ -147,7 +148,7 @@
 <body>
   <!-- Navbar -->
   <nav class="navbar navbar-custom d-flex justify-content-between align-items-center px-4 py-2 bg-success">
-    <a href="#" class="navbar-brand fw-bold text-light">Khetibuddy</a>
+    <a href="#" class="navbar-brand fw-bold text-light">Khetibook</a>
     <div class="navbar-text-center">
       {{ Auth::check() ? Auth::user()->name : 'Guest' }}
     </div>
@@ -170,10 +171,10 @@
 
         <a href="{{ route('crop.dashboard') }}" class="{{ request()->routeIs('crop.dashboard') ? 'active' : '' }}"><i class="fa-brands fa-dashcube"></i>  <span>Dashboard</span></a>
         <a href="{{ route('crop.addcrop') }}" class="{{ request()->routeIs('crop.addcrop') ? 'active' : '' }}"><i class="fa-solid fa-plus"></i>  <span>Add New Crop </span></a>
-        {{-- <a href="{{ url('/my-crops') }}" class="{{ request()->is('my-crops') ? 'active' : '' }}" class="disabled-link" >My Crops</a>
-        <a href="{{ url('/settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}" class="disabled-link" >Settings</a> --}}
-        <a href="#" class="disabled-link"><i class="fa-solid fa-wheat-awn"></i>  <span>My Crops</span></a>
-        <a href="#" class="disabled-link"><i class="fa-solid fa-gear"></i>  <span>Settings</span></a>
+        <a href="{{ route('check.price') }}" class="{{ request()->is('my-crops') ? 'active' : '' }}" ><i class="fas fa-search-dollar"></i> <span>Market Price</span>
+          <a href="{{ route('user.update') }}" class="{{ request()->is('user.update') ? 'active' : '' }}"><i class="fa-solid fa-gear"></i>  <span>Settings</span></a>
+          </a>
+        
       </div>
 
       <!-- Content -->

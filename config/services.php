@@ -33,6 +33,12 @@ return [
         'key' => env('RESEND_KEY'),
     ],
 
+    'data_gov' => [
+    'api_key' => env('DATA_GOV_API_KEY'),
+    'resource_id' => env('DATA_GOV_RESOURCE_ID'),
+    ],
+
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
