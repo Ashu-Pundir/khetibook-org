@@ -71,6 +71,7 @@ Route::get('/check-price', [PriceController::class, 'index'])->name('check.price
 Route::post('/get-price', [PriceController::class, 'checkPriceForm'])->name('submit.checkprice');
 
 Route::get('/user/update', [UserController::class, 'UpdateUser'])->name('user.update');
+Route::put('/user/update/{id}', [UserController::class, 'Update'])->name('submituser.update');
 
 
 Route::get('/admin/check-price', [PriceController::class, 'index'])->name('admincheck.price'); // For the dropdown 

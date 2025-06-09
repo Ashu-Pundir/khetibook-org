@@ -103,8 +103,8 @@ class UserController extends Controller
         return redirect()->route('login');
     }
 
-    public function update(Request $request){
-         $user = Auth::user();
+    public function update(Request $request, $id){
+        $user = User::findOrFail($id);
 
         // Validate user input
         $validator = Validator::make($request->all(), [
@@ -125,8 +125,8 @@ class UserController extends Controller
                 ->withInput();
         }
 
-        // Update user data (excluding email, password, phone)
-        $user = User::update($request->only([
+        // Update user data (excluding password and phone)
+        $user->update($request->only([
             'name',
             'city',
             'district',

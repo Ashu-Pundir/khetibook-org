@@ -189,7 +189,7 @@
       </div>
       <a href="{{ route('crop.dashboard') }}" class="{{ request()->routeIs('crop.dashboard') ? 'active' : '' }}"><i class="fa-brands fa-dashcube"></i>  <span>Dashboard</span></a>
       <a href="{{ route('crop.addcrop') }}" class="{{ request()->routeIs('crop.addcrop') ? 'active' : '' }}"><i class="fa-solid fa-plus"></i>  <span>Add New Crop </span></a>
-      <a href="{{ url('/check-price') }}" class="{{ request()->routeIs('check.price') ? 'active' : '' }}" ><i class="fa-solid fa-wheat-awn"></i> <span>Market Price</span></a>
+      <a href="{{ url('/check-price') }}" class="{{ request()->routeIs('check.price') ? 'active' : '' }}" ><i class="fas fa-search-dollar"></i>  <span>Market Price</span></a>
       <a href="{{ route('user.update') }}" class="{{ request()->routeIs('user.update') ? 'active' : '' }}" ><i class="fa-solid fa-gear"></i>  <span>Settings</span></a>
       </div>  
 

@@ -189,7 +189,7 @@
         <a href="{{ route('crop.dashboard') }}" class="{{ request()->routeIs('crop.dashboard') ? 'active' : '' }}"><i class="fa-brands fa-dashcube"></i>  <span>Dashboard</span></a>
         <a href="{{ route('crop.addcrop') }}" class="{{ request()->routeIs('crop.addcrop') ? 'active' : '' }}"><i class="fa-solid fa-plus"></i>  <span>Add New Crop </span></a>
         <a href="{{ route('check.price') }}" class="{{ request()->is('my-crops') ? 'active' : '' }}" ><i class="fas fa-search-dollar"></i> <span>Market Price</span></a>
-        <a href="{{ url('/settings') }}" class="{{ request()->is('user.update') ? 'active' : '' }}" ><i class="fa-solid fa-gear"></i>  <span>Settings</span></a>
+        <a href="{{ route('user.update') }}" class="{{ request()->routeIs('user.update') ? 'active' : '' }}" ><i class="fa-solid fa-gear"></i>  <span>Settings</span></a>
       </div> 
 
         <!-- Main Content -->
@@ -199,9 +199,10 @@
                     <h5 class="mb-0"><i class="fas fa-user-cog"></i> Edit Profile</h5>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('user.update') }}">
+                    <form method="POST" action="{{ route('submituser.update', ['id' => auth()->user()->id]) }}">
                         @csrf
                         @method('PUT')
+                        <input type="hidden" name="id" value="{{ auth()->user()->id }}">
 
                         <div class="row mb-3">
                             <div class="col-md-6">
