@@ -157,8 +157,8 @@
           <input type="text" class="form-control" name="uphone" id="phone" required maxlength="10" value="{{ old('uphone') }}">
         </div>
         <div class="col-md-6">
-          <label for="email">Email <span class="text-muted">(Optional)</span></label>
-          <input type="email" class="form-control" name="uemail" id="email" value="{{ old('uemail') }}">
+          <label for="email">Email <span class="text-muted"></span></label>
+          <input type="email" class="form-control" name="uemail" id="email" required value="{{ old('uemail') }}">
         </div>
         <div class="col-md-6 password-wrapper">
           <label for="password">Password*</label>
