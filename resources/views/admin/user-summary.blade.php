@@ -159,9 +159,10 @@
         <a href="{{ route('admin.userCropSummary') }}" class="{{ Route::is('admin.userCropSummary') ? 'active' : '' }}">
           <i class="fa-solid fa-wheat-awn"></i><span> Crop Summary</span>
         </a>
-        <a href="{{ route('admincheck.price') }}" class="{{ request()->is('my-crops') ? 'active' : '' }}" ><i class="fas fa-search-dollar"></i> </i> Market Price</a>
+        <a href="{{ route('admincheck.price') }}" class="{{ request()->is('my-crops') ? 'active' : '' }}" ><i class="fa fa-inr" aria-hidden="true"></i> <span>Market Price</span></a>
         
-        <a href="#" class="disabled-link"><i class="fa-solid fa-gear"></i><span> Settings</span></a>
+        <a href="{{ route('admin.setting') }}" class="{{ Route::is('admin.setting') ? 'active' : '' }}"><i class="fa-solid fa-gear"></i><span> Settings</span></a>
+        
         </div>
 
 

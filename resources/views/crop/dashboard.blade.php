@@ -9,6 +9,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <link rel="icon" type="image/png" class="main-logo" href="{{ asset('favicon.ico') }}">
+
 
 
     <style>
@@ -23,6 +25,11 @@
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
     }
+
+    .main-logo{
+      border: 50%;
+    }
+
     .navbar {
       background-color: #366d24;
     }
@@ -190,7 +197,7 @@
       </div>
         <a href="{{ route('crop.dashboard') }}" class="{{ request()->routeIs('crop.dashboard') ? 'active' : '' }}"><i class="fa-brands fa-dashcube"></i>  <span>Dashboard</span></a>
         <a href="{{ route('crop.addcrop') }}" class="{{ request()->routeIs('crop.addcrop') ? 'active' : '' }}"><i class="fa-solid fa-plus"></i>  <span>Add New Crop </span></a>
-        <a href="{{ route('check.price') }}" class="{{ request()->is('my-crops') ? 'active' : '' }}" ><i class="fas fa-search-dollar"></i> Market Price</a>
+        <a href="{{ route('check.price') }}" class="{{ request()->is('my-crops') ? 'active' : '' }}" ><i class="fa fa-inr" aria-hidden="true"></i> <span> Market Price</span></a>
         <a href="{{ route('user.update') }}" class="{{ request()->is('user.update') ? 'active' : '' }}" ><i class="fa-solid fa-gear"></i>  <span>Settings</span></a>
       
       </div>  

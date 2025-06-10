@@ -108,8 +108,8 @@ class UserController extends Controller
 
         // Validate user input
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'city' => 'nullable|string|max:255',
+            'name' => 'required|string|max:50',
+            'city' => 'nullable|string|max:60',
             'district' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
             'pincode' => 'nullable|string|max:20',

@@ -116,7 +116,7 @@
       background-color: #9cc98d;
       height: 92vh;
       padding-top: 2rem;
-      width: 5vw;
+      width: 10vh;
       transition: all 0.25s ease-out;
     }
     
@@ -181,25 +181,33 @@
       <!-- Sidebar -->
       <div class="col-md-2 sidebar pt-4">
       <div class="d-flex justify-content-between align-items-center px-3 mb-4">
-        <h5 class="text-success mb-3 mx-auto">Menu</h5>
+        <h5 class="text-success mb-3 mx-auto">KHETIBOOK</h5>
         <div class="icon ms-auto" style="cursor: pointer;">
           <i class="fa-solid fa-bars text-dark" id="icon"></i>
         </div>
       </div>
-        <a href="{{ route('crop.dashboard') }}" class="{{ request()->routeIs('crop.dashboard') ? 'active' : '' }}"><i class="fa-brands fa-dashcube"></i>  <span>Dashboard</span></a>
-        <a href="{{ route('crop.addcrop') }}" class="{{ request()->routeIs('crop.addcrop') ? 'active' : '' }}"><i class="fa-solid fa-plus"></i>  <span>Add New Crop </span></a>
-        <a href="{{ route('check.price') }}" class="{{ request()->is('my-crops') ? 'active' : '' }}" ><i class="fa fa-inr" aria-hidden="true"></i> <span>Market Price</span></a>
-        <a href="{{ route('user.update') }}" class="{{ request()->routeIs('user.update') ? 'active' : '' }}" ><i class="fa-solid fa-gear"></i>  <span>Settings</span></a>
+        <a href="{{ route('admin.dashboard') }}" class="{{ Route::is('admin.dashboard') ? 'active' : '' }}">    
+          <i class="fa-solid fa-users"></i><span> All Users</span>
+        </a>
+
+        <a href="{{ route('admin.userCropSummary') }}" class="{{ Route::is('admin.userCropSummary') ? 'active' : '' }}">
+          <i class="fa-solid fa-wheat-awn"></i><span> Crop Summary</span>
+        </a>
+
+        <a href="{{ route('admincheck.price') }}" class="{{ Route::is('admincheck.price') ? 'active' : '' }}" ><i class="fa fa-inr" aria-hidden="true"></i> <span>Market Price</span>
+        </a>
+
+        <a href="{{ route('admin.setting') }}" class="{{ Route::is('admin.setting') ? 'active': ''}}"><i class="fa-solid fa-gear"></i> <span> Settings</span></a>
       </div> 
 
         <!-- Main Content -->
         <div class="col-md-10 p-4">
             <div class="card shadow-sm">
                 <div class="card-header bg-success text-white">
-                    <h5 class="mb-0"><i class="fas fa-user-cog"></i> Edit User Profile</h5>
+                    <h5 class="mb-0"><i class="fas fa-user-cog"></i> Edit Admin Profile</h5>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('submituser.update', ['id' => auth()->user()->id]) }}">
+                    <form method="POST" action="{{ route('submitadmin.setting', ['id' => auth()->user()->id]) }}">
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="id" value="{{ auth()->user()->id }}">
@@ -268,21 +276,5 @@
         </div>
     </div>
 </div>
-
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-
-   $(document).ready(function () {
-   $('#icon').on('click', function(){
-            $('.sidebar').toggleClass('sidebar-hide');
-            $('.sidebar').toggleClass('hide');
-            $('.main-content').toggleClass('main-content-hide');
-            $('.sidebar').addClass('.no-icon');
-          });
-      });
-
-
-</script>
 </body>
 </html>

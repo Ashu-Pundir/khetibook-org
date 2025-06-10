@@ -74,5 +74,8 @@ Route::get('/user/update', [UserController::class, 'UpdateUser'])->name('user.up
 Route::put('/user/update/{id}', [UserController::class, 'Update'])->name('submituser.update');
 
 
-Route::get('/admin/check-price', [PriceController::class, 'index'])->name('admincheck.price'); // For the dropdown 
+Route::get('/admin/check-price', [PriceController::class, 'adminIndex'])->name('admincheck.price'); // For the dropdown 
+
+Route::get('/admin/settings', [AdminController::class, 'editAdmin'])->name('admin.setting');
+Route::put('/admin/settings/{id}', [AdminController::class, 'updateAdmin'])->name('submitadmin.setting');
 

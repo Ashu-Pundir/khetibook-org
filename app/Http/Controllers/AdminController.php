@@ -8,6 +8,7 @@ use Flasher\Laravel\Facade\Flasher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -124,6 +125,48 @@ class AdminController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Crop added successfully.');
+    }
+
+    public function editAdmin(){
+        return view('admin.adminsetting');
+    }
+
+    public function updateAdmin(Request $request, $id){
+        $user = User::findorFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:50',
+            'city' => 'required|string|max:60',
+            'district' => 'nullable|string|max:60',
+            'state' => 'nullable|string|max:255',
+            'pincode' => 'nullable|string|max:20',
+            'country' => 'nullable|string|max:100',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
+            'email' => 'nullable|email',
+        ]);
+
+         if($validator->fails()){
+            return redirect()->back()
+            ->withErrors($validator)
+            ->withInput();
+         }
+
+         $user->update($request->only([
+            'name',
+            'city',
+            'district',
+            'state',
+            'pincode',
+            'country',
+            'latitude',
+            'longitude',
+            'email',
+         ]));
+
+         Flasher::addUpdated('Profile Updated Succcessfully');
+
+         return redirect()->back();
     }
 }
 
