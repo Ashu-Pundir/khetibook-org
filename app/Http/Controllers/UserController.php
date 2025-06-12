@@ -68,8 +68,10 @@ class UserController extends Controller
 
         $user->save();
 
-        Flasher::addSuccess('Registration successful');
-        return redirect()->route('login');
+        Auth::login($user);
+
+        return redirect()->route('login')->with('message', 'Registration successful!');
+    
     }
 
 
@@ -116,27 +118,28 @@ class UserController extends Controller
             'country' => 'nullable|string|max:100',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
-            'email' => 'nullable|email',
+            'email' => 'nullable|email|unique:users,email,' . $user->id,
         ]);
 
         if ($validator->fails()) {
+            foreach ($validator->errors()->all() as $error) {
+                Flasher::addError($error);
+            }
             return redirect()->back()
-                ->withErrors($validator)
                 ->withInput();
         }
 
         // Update user data (excluding password and phone)
-        $user->update($request->only([
-            'name',
-            'city',
-            'district',
-            'state',
-            'pincode',
-            'country',
-            'latitude',
-            'longitude',
-            'email',
-        ]));
+        $user->name = $request->input('name');
+        $user->city = $request->input('city');
+        $user->district = $request->input('district');
+        $user->state = $request->input('state');
+        $user->pincode = $request->input('pincode');
+        $user->country = $request->input('country');
+        $user->latitude = $request->input('latitude');
+        $user->longitude = $request->input('longitude');
+        $user->email = $request->input('email');
+        $user->save();
 
         // Show flash success message using Flasher
         Flasher::addSuccess('Profile updated successfully!');

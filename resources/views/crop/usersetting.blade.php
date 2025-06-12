@@ -163,6 +163,11 @@
         display: :none !important;
       }
     }
+
+    .verify-acc{
+      margin-right: 10px;
+    }
+    
   </style>
 </head>
 
@@ -172,6 +177,13 @@
   <nav class="navbar d-flex justify-content-between px-4 py-2 bg-success col-sm-12">
     <div class="fw-bold text-light">KhetiBook</div>
     <div class="navbar-text">{{ Auth::check() ? Auth::user()->name : 'Guest' }}</div>
+    <a href="{{ route('verify.page') }}" class="verify-acc btn btn-outline-light lg-btn btn-sm">
+    @if(Auth::check() && Auth::user()->user_verified)
+      <i class="fa-solid fa-shield-check text-success"></i> Verified
+    @else
+      <i class="fa-solid fa-shield-check"></i> Verify Account
+    @endif
+    </a>
     <div><a href="{{ route('logout') }}" class="btn btn-outline-light lg-btn btn-sm">Logout</a></div>
   </nav>
 
@@ -251,7 +263,7 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label>Email</label>
-                                <input type="email" class="form-control" value="{{ auth()->user()->email }}">
+                                <input type="email" name="email" class="form-control" value="{{ old('email', auth()->user()->email) }}">
                             </div>
                             <div class="col-md-6">
                                 <label>Phone Number (Uneditable)</label>

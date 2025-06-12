@@ -49,15 +49,28 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'email_verified' => 'boolean',
+            'number_verified' => 'boolean',
+            'otp_sent_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
+
 
     public function crops(){
 
         return $this->hasMany(Crop::class, 'user_id');
 
     }
+
+   private function checkIfFullyVerified(User $user)
+    {
+        if ($user->email_verified && $user->number_verified) {
+            $user->user_verified = true;
+            $user->save();
+        }
+    }
+
 
 
 } 

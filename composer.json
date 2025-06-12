@@ -11,10 +11,14 @@
     "require": {
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^3.1",
+        "fouladgar/laravel-mobile-verification": "^4.4",
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.1",
         "laravel/tinker": "^2.10.1",
-        "php-flasher/flasher-laravel": "^2.1"
+        "php-flasher/flasher-laravel": "^2.1",
+        "phpmailer/phpmailer": "^6.10",
+        "twilio/sdk": "^8.6",
+        "tzsk/otp": "^9.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

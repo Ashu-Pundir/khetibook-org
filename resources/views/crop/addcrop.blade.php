@@ -141,6 +141,10 @@
         display: :none !important;
       }
     }
+
+    .verify-acc{
+      margin-right: 6px;
+    }
     
   </style>
 </head>
@@ -153,6 +157,13 @@
       {{ Auth::check() ? Auth::user()->name : 'Guest' }}
     </div>
     <div>
+    <a href="{{ route('verify.page') }}" class="verify-acc btn btn-outline-light lg-btn btn-sm">
+    @if(Auth::check() && Auth::user()->user_verified)
+      <i class="fa-solid fa-shield-check text-success"></i> Verified
+    @else
+      <i class="fa-solid fa-shield-check"></i> Verify Account
+    @endif
+    </a>
       <a href="{{ route('logout') }}" class="btn btn-outline-light btn-sm lg-btn">Logout</a>
     </div>
   </nav>

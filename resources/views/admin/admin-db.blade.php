@@ -201,6 +201,7 @@
           <th>State</th>
           <th>Pincode</th>
           <th>Country</th>
+          <th>User_Verified</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -216,6 +217,8 @@
           <td>{{ $user->state ?? 'N/A' }}</td>
           <td>{{ $user->pincode ?? 'N/A' }}</td>
           <td>{{ $user->country ?? 'N/A' }}</td>
+          <td>{!! $user->user_verified ? '<i class="fa-solid fa-check" style="color: #00ffb3; font-size:22px; margin-top:12px;"></i>' : '<i class="fa-solid fa-xmark" style="color: #ff0000; font-size:22px; margin-top:12px;"></i>' !!}</td>
+
           <td class="action-icons">
             <a href="{{ route('admin.users.show', $user->id) }}"><i class="fas fa-eye view" title="View"></i></a>
             <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this user?');">

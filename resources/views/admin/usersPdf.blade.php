@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Crop Report</title>
+
     <style>
         body { font-family: DejaVu Sans, Arial, Helvetica, sans-serif; 
         font-size: 16px;
@@ -11,23 +12,31 @@
     
     h1 { text-align: center; color: #4CAF50; }
     table {
-            font-size: 12px;
+            font-size: 10px;
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
         th, td {
-            font-size: 12px;
-            padding: 6px;
+            font-size: 10px;
+            padding: 4px;
             border: 1px solid #999;
             text-align: left;
         }
         h2{
             text-align: center;
         }
+
+        header img {
+        float: left;
+        width: 100px;
+        }
     </style>
 </head>
 <body>
+      <header>
+    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('logo.png'))) }}" alt="KhetiBook">
+    </header>
     <h1>KhetiBook All Users</h1>
     @if($users->count() > 0)
   <div class="table-responsive m-3">
@@ -43,6 +52,7 @@
           <th>State</th>
           <th>Pincode</th>
           <th>Country</th>
+          <th>User Verified</th>
         </tr>
       </thead>
       <tbody>
@@ -57,6 +67,13 @@
           <td>{{ $user->state ?? 'N/A' }}</td>
           <td>{{ $user->pincode ?? 'N/A' }}</td>
           <td>{{ $user->country ?? 'N/A' }}</td>
+          <td style="padding-left:22px;">
+            @if($user->user_verified)
+              <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('check.png'))) }}" alt="Verified" width="16">
+            @else
+              <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('cross.png'))) }}" alt="Not Verified" width="16">
+            @endif
+          </td>
         </tr>
         @endforeach
       </tbody>

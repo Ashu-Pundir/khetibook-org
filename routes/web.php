@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CropController;
+use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PriceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VerificationController;
 
 // Public Routes
 Route::get('/', function () {
@@ -78,4 +80,17 @@ Route::get('/admin/check-price', [PriceController::class, 'adminIndex'])->name('
 
 Route::get('/admin/settings', [AdminController::class, 'editAdmin'])->name('admin.setting');
 Route::put('/admin/settings/{id}', [AdminController::class, 'updateAdmin'])->name('submitadmin.setting');
+
+
+    Route::get('/verify', [EmailVerificationController::class, 'verify'])->name('verify.page');
+    Route::get('/verify/email-link', [EmailVerificationController::class, 'verifyEmailByLink'])->name('verify.email.link');
+
+
+    Route::post('/send-email-otp', [EmailVerificationController::class, 'sendEmailOTP'])->name('send.email.otp');
+    Route::post('/verify-email-otp', [EmailVerificationController::class, 'verifyEmailOTP'])->name('verify.email.otp');
+
+    Route::post('/send-number-otp', [EmailVerificationController::class, 'sendNumberOTP'])->name('send.number.otp');
+    Route::post('/verify-number-otp', [EmailVerificationController::class, 'verifyNumberOTP'])->name('verify.number.otp');
+
+
 

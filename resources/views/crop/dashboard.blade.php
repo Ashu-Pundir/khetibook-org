@@ -174,13 +174,26 @@
         display: :none !important;
       }
     }
+
+    .verify-acc{
+      margin-right: 10px;
+    }
+
   </style>
 </head>
 <body>
+
   <!-- Navbar -->
   <nav class="navbar d-flex justify-content-between px-4 py-2 bg-success col-sm-12">
     <div class="fw-bold text-light">KhetiBook</div>
     <div class="navbar-text">{{ Auth::check() ? Auth::user()->name : 'Guest' }}</div>
+    <a href="{{ route('verify.page') }}" class="verify-acc btn btn-outline-light lg-btn btn-sm">
+    @if(Auth::check() && Auth::user()->user_verified)
+    <i class="fa-solid fa-shield-check text-success"></i> Verified
+    @else
+    <i class="fa-solid fa-shield-check"></i> Verify Account
+    @endif
+    </a>
     <div><a href="{{ route('logout') }}" class="btn btn-outline-light lg-btn btn-sm">Logout</a></div>
   </nav>
 
