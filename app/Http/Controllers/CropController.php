@@ -49,6 +49,7 @@ class CropController extends Controller
 
     public function update(Request $request, $id)
     {
+        Log::info($request);
         $request->validate([
             'crop_name' => 'required|string',
             'crop_category' => 'required|string',

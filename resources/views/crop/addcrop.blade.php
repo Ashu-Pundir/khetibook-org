@@ -29,7 +29,7 @@
 
     .sidebar {
       background-color: #9cc98d;
-      height: 92vh;
+      height: 93vh;
       padding-top: 2rem;
       border-right: 1px solid #dee2e6;
       transition: all 0.25s ease-out;
@@ -93,7 +93,7 @@
 
     .sidebar-hide{
       background-color: #9cc98d;
-      height: 92vh;
+      height: 93vh;
       padding-top: 2rem;
       width: 10vh;
       transition: all 0.25s ease-out;
@@ -151,8 +151,10 @@
 
 <body>
   <!-- Navbar -->
-  <nav class="navbar navbar-custom d-flex justify-content-between align-items-center px-4 py-2 bg-success">
-    <a href="#" class="navbar-brand fw-bold text-light">Khetibook</a>
+  <nav class="navbar navbar-custom d-flex justify-content-between align-items-center px-4 py-2 bg-success fw-bold">
+    <a href="#" class="navbar-brand fw-bold text-light"><a href="{{ asset('logo.png') }}">
+        <img src="{{ asset('logo.png') }}" alt="KhetiBook Logo" style="height:25px;vertical-align:middle; margin-bottom:2px;margin-right:5px; border-radius:8px;">
+      </a>Khetibook</a>
     <div class="navbar-text-center">
       {{ Auth::check() ? Auth::user()->name : 'Guest' }}
     </div>
@@ -164,7 +166,7 @@
       <i class="fa-solid fa-shield-check"></i> Verify Account
     @endif
     </a>
-      <a href="{{ route('logout') }}" class="btn btn-outline-light btn-sm lg-btn">Logout</a>
+      <a href="{{ route('logout') }}" class="btn btn-outline-light btn-sm lg-btn"><i class="fas fa-sign-out"></i> Logout</a>
     </div>
   </nav>
 
@@ -214,8 +216,29 @@
               <input type="number" class="form-control" id="cropPrice" name="cropprice" placeholder="Enter price">
             </div>
             <div class="mb-3">
-              <label for="cropCategory" class="form-label">Category</label>
-              <input type="text" class="form-control" id="cropCategory" name="cropcategory" placeholder="Rice - basmati/jasmine | Sugarcane - CoS 8436,">
+            <label for="cropCategory" class="form-label">Crop Category</label>
+            <select class="form-select" id="cropCategory" name="cropcategory" required>
+                <option value="">-- Select Crop Category --</option>
+                @php
+                    $categories = [
+                          'Cereals (Atta)',
+                          'Pulses (Daal)',
+                          'Vegetables',
+                          'Fruits',
+                          'Spices',
+                          'Cash/Commercial',
+                          'Other'
+                    ];
+                @endphp
+
+                @foreach ($categories as $category)
+                    <option value="{{ $category }}"
+                        {{ old('cropcategory', $crop->crop_category ?? '') == $category ? 'selected' : '' }}>
+                        {{ $category }}
+                    </option>
+                @endforeach
+</select>
+
             </div>
             <div class="text-center">
               <button type="submit" class="btn btn-success px-4">Save Crop</button>

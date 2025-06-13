@@ -33,8 +33,8 @@
           <!-- Logo -->
           <tr>
             <td style="padding:40px 0;" align="center">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Eo_circle_light-green_letter-k.svg/768px-Eo_circle_light-green_letter-k.svg.png?20200417151822" alt="KhetiBook Logo" width="48" height="48" style="display:block;">
-            </td>
+                <img src="{{ asset('logo.png') }}" alt="KhetiBook Logo" width="48" height="48" style="display:block;">
+            </td>  
           </tr>
 
           <!-- Title -->

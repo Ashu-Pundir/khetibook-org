@@ -53,22 +53,22 @@
                                     <form method="POST" action="{{ route('send.email.otp') }}">
                                         @csrf
                                         <button class="btn btn-success w-100" type="submit"
-                                          @if(Auth::user()->email_verified) disabled @endif>
-                                          {{ Auth::user()->email_verified ? '✅ Email Verified' : 'Send Email OTP' }}
-                                          </button>
+                                            @if (Auth::user()->email_verified) disabled @endif>
+                                            {{ Auth::user()->email_verified ? '✅ Email Verified' : 'Send Email OTP' }}
+                                        </button>
                                     </form>
 
                                     <form method="POST" action="{{ route('verify.email.otp') }}">
                                         @csrf
-                                        <div class="mb-2">
+                                        <div class="mb-2 mt-2">
                                             <input type="text" name="otp" class="form-control"
                                                 placeholder="Enter Email OTP"
                                                 {{ Auth::user()->email_verified ? 'readonly' : '' }}>
-                                              </div>
-                                          <button class="btn btn-success w-100" type="submit"
-                                          @if(Auth::user()->email_verified) disabled @endif>
-                                          {{ Auth::user()->email_verified ? '✅ Email Verified' : 'Enter Email OTP' }}
-                                          </button>
+                                        </div>
+                                        <button class="btn btn-success w-100" type="submit"
+                                            @if (Auth::user()->email_verified) disabled @endif>
+                                            {{ Auth::user()->email_verified ? '✅ Email Verified' : 'Enter Email OTP' }}
+                                        </button>
                                     </form>
 
                                     @if (Auth::user()->email_verified)
@@ -104,13 +104,11 @@
 
                                         <input type="hidden" name="phone_number" value="{{ Auth::user()->phone_number }}">
                                         <button class="btn btn-primary w-100 mb-2" id="phone-otp" type="submit"
-                                        @if(Auth::user()->number_verified) disabled @endif>
-                                        {{ Auth::user()->number_verified ? '✅ Phone Verified' : 'Send Phone OTP' }}
-                                      </button>
+                                            @if (Auth::user()->number_verified) disabled @endif>
+                                            {{ Auth::user()->number_verified ? '✅ Phone Verified' : 'Send Phone OTP' }}
+                                        </button>
 
-                                    </form>
-
-
+                                    </form>     
 
                                     <form method="POST" action="{{ route('verify.number.otp') }}">
                                         @csrf
@@ -120,9 +118,9 @@
                                                 {{ Auth::user()->number_verified ? 'readonly' : '' }}>
                                         </div>
                                         <button class="btn btn-primary w-100 mb-2" id="phone-otp" type="submit"
-                                        @if(Auth::user()->number_verified) disabled @endif>
-                                        {{ Auth::user()->number_verified ? '✅ Phone Verified' : 'Enter Phone OTP' }}
-                                      </button>
+                                            @if (Auth::user()->number_verified) disabled @endif>
+                                            {{ Auth::user()->number_verified ? '✅ Phone Verified' : 'Enter Phone OTP' }}
+                                        </button>
                                     </form>
 
                                     @if (session('success'))
@@ -169,55 +167,54 @@
         </div>
     </div>
 
- <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const timerDiv = document.getElementById('otp-timer');
-    const sendPhoneBtn = document.getElementById('phone-otp');
-    const userId = "{{ Auth::id() }}";
-    const isVerified = "{{ Auth::user()->number_verified }}";
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const timerDiv = document.getElementById('otp-timer');
+            const sendPhoneBtn = document.getElementById('phone-otp');
+            const userId = "{{ Auth::id() }}";
+            const isVerified = "{{ Auth::user()->number_verified }}";
 
-    if (isVerified === "1") {
-        sendPhoneBtn.disabled = true;
-        sendPhoneBtn.innerText = "✅ Phone Verified";
-        timerDiv.innerText = "";
-        return; // Skip timer logic entirely
-    }
+            if (isVerified === "1") {
+                sendPhoneBtn.disabled = true;
+                sendPhoneBtn.innerText = "✅ Phone Verified";
+                timerDiv.innerText = "";
+                return; // Skip timer logic entirely
+            }
 
-    const key = `otpCooldown_user_${userId}`;
-    let timer = localStorage.getItem(key) ? parseInt(localStorage.getItem(key)) : 0;
+            const key = `otpCooldown_user_${userId}`;
+            let timer = localStorage.getItem(key) ? parseInt(localStorage.getItem(key)) : 0;
 
-    @if(session('otp_timer_start'))
-        timer = 60;
-        localStorage.setItem(key, timer);
-    @endif
+            @if (session('otp_timer_start'))
+                timer = 60;
+                localStorage.setItem(key, timer);
+            @endif
 
-    function updateTimer() {
-        if (timer > 0) {
-            sendPhoneBtn.disabled = true;
-            sendPhoneBtn.innerText = `Wait ${timer}s...`;
-            timerDiv.innerText = `Please wait ${timer} seconds before requesting a new OTP.`;
-            timer--;
-            localStorage.setItem(key, timer);
-        } else {
-            sendPhoneBtn.disabled = false;
-            sendPhoneBtn.innerText = "Send Phone OTP Again";
-            timerDiv.innerText = "";
-            localStorage.removeItem(key);
-            clearInterval(window.otpInterval);
-        }
-    }
+            function updateTimer() {
+                if (timer > 0) {
+                    sendPhoneBtn.disabled = true;
+                    sendPhoneBtn.innerText = `Wait ${timer}s...`;
+                    timerDiv.innerText = `Please wait ${timer} seconds before requesting a new OTP.`;
+                    timer--;
+                    localStorage.setItem(key, timer);
+                } else {
+                    sendPhoneBtn.disabled = false;
+                    sendPhoneBtn.innerText = "Send Phone OTP Again";
+                    timerDiv.innerText = "";
+                    localStorage.removeItem(key);
+                    clearInterval(window.otpInterval);
+                }
+            }
 
-    if (timer > 0) {
-        sendPhoneBtn.disabled = true;
-        updateTimer();
-        window.otpInterval = setInterval(updateTimer, 1000);
-    } else {
-        sendPhoneBtn.disabled = false;
-        sendPhoneBtn.innerText = "Send Phone OTP";
-    }
-});
-
- </script>
+            if (timer > 0) {
+                sendPhoneBtn.disabled = true;
+                updateTimer();
+                window.otpInterval = setInterval(updateTimer, 1000);
+            } else {
+                sendPhoneBtn.disabled = false;
+                sendPhoneBtn.innerText = "Send Phone OTP";
+            }
+        });
+    </script>
 
 
 

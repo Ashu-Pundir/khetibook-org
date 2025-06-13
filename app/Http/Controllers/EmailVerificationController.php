@@ -119,35 +119,64 @@ public function sendNumberOTP(Request $request)
 
 
     public function verifyEmailByLink(Request $request)
-{
-    $otp = $request->query('otp');
-    $user = Auth::user();
+    {
+        $otp = $request->query('otp');
+        $user = Auth::user();
 
-    if ($user && $user->email_otp == $otp) {
-        $user->email_verified = true;
-
-        // Check if phone number is already verified
-        if ($user->number_verified) {
-            $user->user_verified = true; // Now both are verified
+        // If user is not authenticated, try to find user by OTP
+        if (!$user && $otp) {
+            $user = \App\Models\User::where('email_otp', $otp)->first();
+            if ($user) {
+                Auth::login($user); // Log in the user
+            }
         }
 
-        if ($user instanceof \App\Models\User) {
-            $user->save();
+        if ($user && $user->email_otp == $otp) {
+            $user->email_verified = true;
+            $user->email_otp = null;
+
+            // Check if phone number is already verified
+            if ($user->number_verified) {
+                $user->user_verified = true; // Now both are verified
+            }
+
+            if ($user instanceof \App\Models\User) {
+                $user->save();
+            }
+
+            return redirect()->back()->with('success', 'Email verified successfully!');
         }
 
-        return redirect()->back()->with('success', 'Email verified successfully!');
+        return redirect()->back()->with('error', 'Invalid or expired OTP.');
     }
 
-    return redirect()->back()->withInput()->with('error', 'Invalid or expired OTP.');
-}
-
-
-
-   private function checkIfFullyVerified($user)
+    private function checkIfFullyVerified($user)
 {
     if ($user->email_verified && $user->number_verified) {
         $user->user_verified = true;
         $user->save();
     }
 }
+
+
+public function sendEmailOTP()
+    {
+        $user = Auth::user();
+        $otp = rand(100000, 999999);
+
+        // Ensure $user is an instance of User before saving
+        if ($user instanceof \App\Models\User) {
+            $user->email_otp = $otp;
+            $user->save();
+        }
+        // Generate verification URL
+        $verifyUrl = url('/verify/email-link?otp=' . $otp);
+        // Send email using Mail
+        Mail::send('emails.otp-template', ['otp' => $otp, 'verifyUrl' => $verifyUrl], function ($message) use ($user) {
+            $message->to($user->email)
+                    ->subject('Khetibook Email Verification OTP');
+        });
+
+        return back()->with('success', 'OTP sent to your email.');
+    }
 }

@@ -7,7 +7,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        <style>
     :root {
       --bg-main: #f0f0e5;
       --table-header: #e6ebe9;
@@ -170,9 +169,11 @@
 
 <!-- Navbar -->
   <nav class="navbar d-flex justify-content-between px-4 py-2 bg-success col-sm-12">
-    <div class="fw-bold text-light">KhetiBook</div>
+    <div class="fw-bold text-light"><a href="{{ asset('logo.png') }}">
+        <img src="{{ asset('logo.png') }}" alt="KhetiBook Logo" style="height:25px;vertical-align:middle; margin-bottom:4px; border-radius:8px;">
+      </a>KhetiBook</div>
     <div class="navbar-text">{{ Auth::check() ? Auth::user()->name : 'Guest' }}</div>
-    <div><a href="{{ route('logout') }}" class="btn btn-outline-light lg-btn btn-sm">Logout</a></div>
+    <div><a href="{{ route('logout') }}" class="btn btn-outline-light lg-btn btn-sm"><i class="fas fa-sign-out"></i> Logout</a></div>
   </nav>
 
   <div class="container-fluid">
