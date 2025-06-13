@@ -12,41 +12,45 @@ use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return view('admin.admin-login');
     }
 
-    public function login(Request $request){
+    public function login(Request $request)
+    {
 
         $credentials = $request->validate([
-        'uphone' => 'required|digits:10',
-        'upassword' => 'required',
-    ]);
-        
-    // Find user by phone number
-    $user = User::where('phone_number', $credentials['uphone'])->first();   
+            'uphone' => 'required|digits:10',
+            'upassword' => 'required',
+        ]);
 
-    $mobile_number = 1122334466;
+        // Find user by phone number
+        $user = User::where('phone_number', $credentials['uphone'])->first();
 
-    if ($user && ($user->phone_number == $mobile_number) && Hash::check($credentials['upassword'], $user->password)) {
-        Auth::login($user);
-        $request->session()->regenerate();
-        Flasher::addSuccess('Admin logged in Successfully');
-        return redirect()->route('admin.dashboard');
+        $mobile_number = 1122334466;
+
+        if ($user && ($user->phone_number == $mobile_number) && Hash::check($credentials['upassword'], $user->password)) {
+            Auth::login($user);
+            $request->session()->regenerate();
+            Flasher::addSuccess('Admin logged in Successfully');
+            return redirect()->route('admin.dashboard');
+        }
+
+        Flasher::addError('Invalid phone number or password');
+        return redirect()->route('admin.login');
     }
 
-    Flasher::addError('Invalid phone number or password');
-    return redirect()->route('admin.login');
-    }
-
-    public function show(){
+    public function show()
+    {
         $users = User::where('phone_number', '!=', '1122334466')->get();
 
-        return view('admin.admin-db', compact('users'));    
+        return view('admin.admin-db', compact('users'));
     }
 
 
-    public function viewUser($id){
+    public function viewUser($id)
+    {
         $user = User::where('id', $id)->first();
         $crop = Crop::where('user_id', $id)->get();
 
@@ -54,7 +58,8 @@ class AdminController extends Controller
     }
 
 
-    public function deleteUser($id){
+    public function deleteUser($id)
+    {
 
         $user = User::findorFail($id);
         $user->delete();
@@ -62,21 +67,23 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    public function allcrops(){
+    public function allcrops()
+    {
         $crops = Crop::all();
 
         return view('admin.allcrops', compact('crops'));
     }
 
-    public function userUpdate(Request $request, $id) {
-    $user = User::findOrFail($id);
-    $user->update($request->all());
+    public function userUpdate(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $user->update($request->all());
 
-    Flasher::addUpdated('success', 'User updated successfully!');
-    return redirect()->back();  
-}
+        Flasher::addUpdated('success', 'User updated successfully!');
+        return redirect()->back();
+    }
 
-        public function userCropUpdate(Request $request, $id)
+    public function userCropUpdate(Request $request, $id)
     {
         $validated = $request->validate([
             'crop_name' => 'required|string|max:255',
@@ -127,12 +134,14 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Crop added successfully.');
     }
 
-    public function editAdmin(){
+    public function editAdmin()
+    {
         return view('admin.adminsetting');
     }
 
-    public function updateAdmin(Request $request, $id){
-        $user = User::findorFail($id);
+    public function updateAdmin(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:50',
@@ -146,13 +155,18 @@ class AdminController extends Controller
             'email' => 'nullable|email',
         ]);
 
-         if($validator->fails()){
+        if ($validator->fails()) {
             return redirect()->back()
-            ->withErrors($validator)
-            ->withInput();
-         }
+                ->withErrors($validator)
+                ->withInput();
+        }
 
-         $user->update($request->only([
+
+        $user->email_verified = $request->has('email_verified') ? 1 : 0;
+        $user->number_verified = $request->has('number_verified') ? 1 : 0;
+
+
+        $user->fill($request->only([
             'name',
             'city',
             'district',
@@ -162,12 +176,15 @@ class AdminController extends Controller
             'latitude',
             'longitude',
             'email',
-         ]));
+        ]));
 
-         Flasher::addUpdated('Profile Updated Succcessfully');
+        $user->user_verified = ($user->email_verified && $user->number_verified) ? 1 : 0;
 
-         return redirect()->back();
+        // ✅ Save all together
+        $user->save();
+
+        Flasher::addUpdated('Profile Updated Successfully');
+
+        return redirect()->back();
     }
 }
-
-

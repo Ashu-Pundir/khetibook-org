@@ -16,26 +16,6 @@ class EmailVerificationController extends Controller
         return view('emails.verify');
     }
 
-    public function sendEmailOTP()
-    {
-        $user = Auth::user();
-        $otp = rand(100000, 999999);
-
-        // Ensure $user is an instance of User before saving
-        if ($user instanceof \App\Models\User) {
-            $user->email_otp = $otp;
-            $user->save();
-        }
-        // Generate verification URL
-        $verifyUrl = url('/verify/email-link?otp=' . $otp);
-        // Send email using Mailtrap
-        Mail::send('emails.otp-template', ['otp' => $otp, 'verifyUrl' => $verifyUrl], function ($message) use ($user) {
-            $message->to($user->email)
-                    ->subject('Khetibook Email Verification OTP');
-        });
-
-        return back()->with('success', 'OTP sent to your email.');
-    }
 
     public function verifyEmailOTP(Request $request)
 {
@@ -48,7 +28,9 @@ class EmailVerificationController extends Controller
     if ($user instanceof \App\Models\User && $user->email_otp == $request->otp) {
         $user->email_verified = true;
         $user->email_otp = null;
-        $user->save();
+        if ($user instanceof \App\Models\User) {
+            $user->save();
+        }
 
         $this->checkIfFullyVerified($user); // check if both verifications are done
 
@@ -66,18 +48,8 @@ public function sendNumberOTP(Request $request)
         'phone_number' => 'required|numeric',
     ]);
 
-
-
     $user = Auth::user();
-
-    if (!$user) {
-        return back()->with('error', 'User not authenticated.');
-    }
-
-    // Optional: check if entered number matches user record
-    if ($user->phone_number != $request->phone_number) {
-        return back()->with('error', 'Entered number does not match your registered number.');
-    }
+    if (!$user) return back()->with('error', 'User not authenticated.');
 
     $otp = rand(100000, 999999);
     $user->number_otp = $otp;
@@ -89,17 +61,10 @@ public function sendNumberOTP(Request $request)
     $sid    = env('TWILIO_SID');
     $token  = env('TWILIO_AUTH_TOKEN');
     $from   = env('TWILIO_PHONE');
-
     $to = $request->phone_number;
     if (!str_starts_with($to, '+')) {
-        $to = '+91' . ltrim($to, '0');
+        $to = '+91'.ltrim($to, '0');
     }
-
-    // if ($user->otp_sent_at && now()->diffInSeconds(\Carbon\Carbon::parse($user->otp_sent_at)) < 60) {
-    //     $elapsed = now()->diffInSeconds(\Carbon\Carbon::parse($user->otp_sent_at));
-    //     $remaining = 60 - $elapsed;
-    //     return back()->with('error', "Please wait {$remaining} seconds before requesting another OTP.");
-    // }
 
     try {
         $twilio = new Client($sid, $token);
@@ -108,12 +73,15 @@ public function sendNumberOTP(Request $request)
             'body' => "Your OTP for KhetiBook is $otp"
         ]);
 
-        return back()->with(['success' => 'OTP sent to your number.']);
+        return back()->with([
+            'success' => 'OTP sent to your number.',
+            'otp_timer_start' => true  // triggers timer
+        ]);
+
     } catch (\Exception $e) {
-        return back()->with(['error' => 'Failed to send OTP.']);
+        return back()->with('error', 'Failed to send OTP.');
     }
 }
-
 
 
    public function verifyNumberOTP(Request $request)

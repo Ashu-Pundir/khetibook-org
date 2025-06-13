@@ -67,6 +67,14 @@
                         <label class="form-label">Longitude</label>
                         <input type="text" name="longitude" class="form-control" value="{{ $user->longitude }}">
                     </div>
+                    <div class="col-md-6 mt-3">
+                        <label class="form-label">Email Verified</label>
+                        <input type="text" name="email_verified" class="form-control" value="{{ $user->email_verified ? '1' : '0' }}">
+                    </div>
+                    <div class="col-md-6 mt-3">
+                        <label class="form-label">Number Verified</label>
+                        <input type="text" name="number_verified" class="form-control" value="{{ $user->number_verified ? '1' : '0'}}">
+                    </div>
                 </div>
             </div>
 

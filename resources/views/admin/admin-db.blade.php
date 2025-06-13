@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
   <style>
+
     body {
       background-color: #f4fdf7;
       font-family: 'Segoe UI', sans-serif;
@@ -219,14 +220,14 @@
           <td>{{ $user->country ?? 'N/A' }}</td>
           <td>{!! $user->user_verified ? '<i class="fa-solid fa-check" style="color: #00ffb3; font-size:22px; margin-top:12px;"></i>' : '<i class="fa-solid fa-xmark" style="color: #ff0000; font-size:22px; margin-top:12px;"></i>' !!}</td>
 
-          <td class="action-icons">
+            <td class="action-icons" id="admin-icons" style="padding-top: 16px;">
             <a href="{{ route('admin.users.show', $user->id) }}"><i class="fas fa-eye view" title="View"></i></a>
             <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this user?');">
               @csrf
               @method('DELETE')
               <button type="submit" class="btn btn-link p-0 m-0"><i class="fas fa-trash delete" title="Delete"></i></button>
             </form>
-          </td>
+            </td>
         </tr>
         @endforeach
       </tbody>
