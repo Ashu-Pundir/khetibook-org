@@ -208,9 +208,9 @@
         <div class="navbar-text">{{ Auth::check() ? Auth::user()->name : 'Guest' }}</div>
         <a href="{{ route('verify.page') }}" class="verify-acc btn btn-outline-light lg-btn btn-sm">
             @if (Auth::check() && Auth::user()->user_verified)
-                <i class="fa-solid fa-shield-check text-success"></i> Verified
+                Verified <i class="fa-solid fa-file-circle-check"></i>
             @else
-                <i class="fa-solid fa-shield-check"></i> Verify Account
+                <i class="fa-solid fa-shield-halved"></i> Verify Account
             @endif
         </a>
         <div><a href="{{ route('logout') }}" class="btn btn-outline-light lg-btn btn-sm"><i class="fas fa-sign-out"></i>
@@ -249,7 +249,7 @@
                     <a href="{{ route('crops.pdf') }}" class="btn btn-success mb-3" target="_blank">📄 Download Crop
                         Report (PDF)</a>
                 @endif
-                <a href="{{ route('crop.addcrop') }}" class="btn btn-success mb-3">Add new Crop</a>
+                <a href="{{ route('crop.addcrop') }}" class="btn btn-success mb-3"><i class="fa-solid fa-plus"></i>     Add new Crop</a>
 
                 @if ($crops->count() > 0)
                     <div class="table-responsive">
